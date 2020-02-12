@@ -1,7 +1,9 @@
 package com.max.demo.api;
 
 import com.max.demo.model.Person;
+import com.max.demo.model.response.PersonResponse;
 import com.max.demo.service.PersonService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +25,13 @@ public class PersonController {
     }
 
     @PostMapping
-    public void addPerson(@RequestBody Person person){ // requestBody to insert rest body inside
+    public PersonResponse addPerson(@Valid @NonNull @RequestBody Person person){ // requestBody to insert rest body inside
         personService.addPerson(person);
+
+        PersonResponse personResponse = new PersonResponse();
+        BeanUtils.copyProperties(person,personResponse);
+
+        return personResponse;
 
     }
 
